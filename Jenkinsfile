@@ -25,6 +25,11 @@ pipeline {
                         sh 'mvn clean package site'
                     }
                 }
+                gradlew 'test jacocoTestReport -x classes -x testClasses'
+
+                junit "build/test-results/test/*.xml"
+                archiveArtifacts "build/test-results/test/*.xml"
+
                 step([
                     $class: '**/classes',
                     execPattern: "**/**.exec",
