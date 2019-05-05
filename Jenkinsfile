@@ -24,7 +24,11 @@ pipeline {
                         sh 'set HTTPS_PROXY=$HTTP_PROXY'
                         sh 'mvn clean package site'
                     }
-                }
+                },
+                step([
+                    $class: '**/classes',
+                    execPattern: "**/**.exec",
+                ])
             }
             post {
                 success {
