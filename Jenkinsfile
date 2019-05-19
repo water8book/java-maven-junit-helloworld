@@ -30,7 +30,7 @@ pipeline {
                 success {
                 recordIssues tool: checkStyle(pattern: "**/checkstyle-result.xml")
                 recordIssues tool: spotBugs(pattern: "**/spotbugsXml.xml")
-                jacoco( 
+                jacoco(
                     execPattern: '**/**.exec',
                     classPattern: '**/classes',
                     sourcePattern: '**/src/main/java',
