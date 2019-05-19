@@ -25,20 +25,17 @@ pipeline {
                         sh 'mvn clean package site'
                     }
                 }
-                gradlew 'test jacocoTestReport -x classes -x testClasses'
-
-                junit "build/test-results/test/*.xml"
-                archiveArtifacts "build/test-results/test/*.xml"
-
-                step([
-                    $class: '**/classes',
-                    execPattern: "**/**.exec",
-                ])
             }
             post {
                 success {
                 recordIssues tool: checkStyle(pattern: "**/checkstyle-result.xml")
                 recordIssues tool: spotBugs(pattern: "**/spotbugsXml.xml")
+                jacoco( 
+                    execPattern: '**/**.exec',
+                    classPattern: '**/classes',
+                    sourcePattern: '**/src/main/java',
+                    exclusionPattern: '**/*.java'
+                )
                 stepcounter settings: [[encoding: 'UTF-8', filePattern: 'src/main/**/*.java', filePatternExclude: '', key: 'Java'], [encoding: 'UTF-8', filePattern: 'src/test/**/*.java', filePatternExclude: 'src/test/java/sample/*.java', key: 'TestCode']]
                 }
             }
